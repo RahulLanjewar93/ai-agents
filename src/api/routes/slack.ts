@@ -1,8 +1,3 @@
-import { Router } from 'express';
+import { expressReceiver } from '../controllers/slack';
 
-export const slackRouter = Router();
-
-slackRouter.post('/', (req, res) => {
-  console.log('', req.body);
-  res.sendStatus(200);
-});
+export const slackRouter = expressReceiver.router;

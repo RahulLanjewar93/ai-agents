@@ -1,7 +1,7 @@
 export interface AgentResponse {
   success: boolean;
   message: string;
-  data: any;
+  data: string;
 }
 
 export interface Agent {
