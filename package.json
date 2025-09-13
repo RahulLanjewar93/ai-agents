@@ -5,8 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "tsx -r dotenv/config src/server.ts",
-    "dev:watch": "tsx watch -r dotenv/config src/server.ts",
+    "dev": "tsx -r dotenv/config --inspect src/server.ts",
+    "dev:watch": "tsx watch -r dotenv/config --inspect src/server.ts",
     "test": "test",
     "format": "prettier --write --ignore-unknown src",
     "lint": "eslint --ext .ts ./src",
