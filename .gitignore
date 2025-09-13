@@ -1,0 +1,25 @@
+node_modules/
+
+lib/
+logs/
+minio-data/
+
+#files
+quokka.ts
+src/config.json
+*.http
+!rest-client/*.http
+*.env
+.env.*
+!.env.example
+rest-client/.data.json
+config.dev.json
+config.test.json
+temporal.db*
+test.json
+
+# Ignore DevSpace cache and log folder
+.devspace/
+.history/
+.DS_Store
+.vizmo/

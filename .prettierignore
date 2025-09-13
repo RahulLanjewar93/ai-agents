@@ -1,0 +1,10 @@
+node_modules/
+lib/
+.husky/
+.vscode
+
+# specific files
+
+# extensions
+*.yaml
+*.yml
