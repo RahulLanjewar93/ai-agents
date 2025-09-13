@@ -1,13 +1,14 @@
-import { TriageAgent } from './triage';
-import { BugAgent } from './bug';
-import { GeneralAgent } from './general';
+import { SuperAgent } from './super/super';
+import { BugAgent } from './bug/bug';
+import { GeneralAgent } from './general/general';
+import { OrchestratorAgent } from './orchestrator/orchestrator';
 
 export function initializeAgents() {
-  // Initialize the triage agent
-  const triageAgent = TriageAgent.getInstance();
-  const bugAgent = new BugAgent();
-  const generalAgent = new GeneralAgent();
+  const superAgent = SuperAgent.getInstance();
 
-  triageAgent.registerAgent('bug', bugAgent);
-  triageAgent.registerAgent('general', generalAgent);
+  const agents = [new BugAgent(), new GeneralAgent(), new OrchestratorAgent()];
+
+  for (const agent of agents) {
+    superAgent.registerAgent(agent.name, agent);
+  }
 }

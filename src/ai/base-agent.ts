@@ -1,22 +1,38 @@
 import OpenAI from 'openai';
 import { config } from 'src/config';
 
-export class LLMService {
-  private openai: OpenAI;
+export interface AgentResponse<T = string> {
+  success: boolean;
+  message: string;
+  data: T;
+  errorCode?: string;
+  timestamp?: Date;
+}
 
-  constructor() {
+export abstract class BaseAgent<T = string> {
+  private id: string;
+  public name: string;
+  public description: string;
+  protected openai: OpenAI;
+
+  constructor(id: string, name: string, description: string) {
+    this.id = id;
+    this.name = name;
+    this.description = description;
     this.openai = new OpenAI({
       apiKey: config.openAi.apiKey,
       baseURL: config.openAi.baseUrl,
     });
   }
 
+  abstract processQuery(query: string): Promise<AgentResponse<T>>;
+
   /**
    * Format a message using the LLM
    * @param message The message to format
    * @returns The formatted message
    */
-  async formatMessage(message: string): Promise<string> {
+  protected async formatMessage(message: string): Promise<string> {
     try {
       const response = await this.openai.chat.completions.create({
         model: config.openAi.model,
@@ -43,42 +59,11 @@ export class LLMService {
   }
 
   /**
-   * Classify a message to determine which agent should handle it
-   * @param message The message to classify
-   * @returns The classification result
-   */
-  async classifyMessage(message: string): Promise<string> {
-    try {
-      const response = await this.openai.chat.completions.create({
-        model: config.openAi.model,
-        messages: [
-          {
-            role: 'system',
-            content:
-              'You are a classification assistant. Based on the user message, determine which category it belongs to: "bug" or "general". Respond with only one word: "bug" or "general".',
-          },
-          {
-            role: 'user',
-            content: message,
-          },
-        ],
-        temperature: 0.1,
-        max_tokens: 10,
-      });
-
-      return response.choices[0]?.message?.content?.toLowerCase().trim() as string;
-    } catch (error) {
-      console.error('Error classifying message with LLM:', error);
-      return 'other'; // Default to other if classification fails
-    }
-  }
-
-  /**
    * Generate a summary of a message
    * @param message The message to summarize
    * @returns The summary
    */
-  async generateSummary(message: string): Promise<string> {
+  protected async generateSummary(message: string): Promise<string> {
     try {
       const response = await this.openai.chat.completions.create({
         model: config.openAi.model,
@@ -109,7 +94,7 @@ export class LLMService {
    * @param message The message to generate a response for
    * @returns The generated response
    */
-  async generateResponse(message: string): Promise<string> {
+  protected async generateResponse(message: string): Promise<string> {
     try {
       const response = await this.openai.chat.completions.create({
         model: config.openAi.model,

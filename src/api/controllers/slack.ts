@@ -1,6 +1,6 @@
 // Your Slack event listeners here
 import { App, ExpressReceiver } from '@slack/bolt';
-import { TriageAgent } from 'src/ai/triage';
+import { SuperAgent } from 'src/ai/super/super';
 import { config } from 'src/config';
 
 export const expressReceiver = new ExpressReceiver({
@@ -17,10 +17,10 @@ const boltApp = new App({
   receiver: expressReceiver,
 });
 
-const triageAgent = TriageAgent.getInstance();
+const superAgent = SuperAgent.getInstance();
 
 boltApp.event('app_mention', async ({ event, say }) => {
-  const response = await triageAgent.processQuery(event.text);
+  const response = await superAgent.processQuery(event.text);
 
   await say({
     text: response.data,
