@@ -1,14 +1,11 @@
-import { SuperAgent } from './super/super';
-import { BugAgent } from './bug/bug';
-import { GeneralAgent } from './general/general';
-import { OrchestratorAgent } from './orchestrator/orchestrator';
+import { OrchestratorAgent } from './orchestrator/agent';
+import { BugAgent } from './bug/agent';
+import { GeneralAgent } from './general/agent';
 
 export function initializeAgents() {
-  const superAgent = SuperAgent.getInstance();
+  const orchestrator = new OrchestratorAgent();
 
-  const agents = [new BugAgent(), new GeneralAgent(), new OrchestratorAgent()];
-
-  for (const agent of agents) {
-    superAgent.registerAgent(agent.name, agent);
-  }
+  // Register core agents
+  orchestrator.registerAgent('bug', new BugAgent());
+  orchestrator.registerAgent('general', new GeneralAgent());
 }

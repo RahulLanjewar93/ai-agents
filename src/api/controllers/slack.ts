@@ -1,6 +1,6 @@
 // Your Slack event listeners here
 import { App, ExpressReceiver } from '@slack/bolt';
-import { SuperAgent } from 'src/ai/super/super';
+import { SuperAgent } from 'src/ai/super/agent';
 import { config } from 'src/config';
 
 export const expressReceiver = new ExpressReceiver({

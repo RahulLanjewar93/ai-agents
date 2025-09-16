@@ -8,9 +8,11 @@ import morgan from 'morgan';
 async function main() {
   const app = express();
 
+  // Middlewares
   app.use(morgan('tiny'));
   app.use('/api', apiRouter);
 
+  // Health check
   app.get('/health', (req, res) => {
     res.send({ status: 'ok' }).status(200);
   });
